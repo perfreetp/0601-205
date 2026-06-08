@@ -42,6 +42,8 @@ export interface VideoClip {
   duration: number;
   videoUrl: string;
   matchId?: string;
+  trainingDate?: string;
+  trainingTopic?: string;
   playerIds: string[];
   actionType: ActionType;
   scoreText?: string;
@@ -53,6 +55,19 @@ export interface VideoClip {
   commentCount: number;
   allowShare: boolean;
   minorVisible: boolean;
+}
+
+export interface VideoCollection {
+  id: string;
+  title: string;
+  cover: string;
+  videoIds: string[];
+  matchId?: string;
+  trainingDate?: string;
+  createdBy: string;
+  createdByName: string;
+  createdAt: string;
+  description?: string;
 }
 
 export interface Comment {

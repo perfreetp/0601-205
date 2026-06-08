@@ -194,6 +194,21 @@ const VerifyPage: React.FC = () => {
       ) : (
         <View className={styles.formCard}>
           <View className={styles.formItem}>
+            <Text className={styles.label}>选择身份</Text>
+            <View className={styles.roleList}>
+              {roles.map(role => (
+                <View
+                  key={role.key}
+                  className={classnames(styles.roleItem, selectedRole === role.key && styles.activeRole)}
+                  onClick={() => setSelectedRole(role.key)}
+                >
+                  {role.label}
+                </View>
+              ))}
+            </View>
+          </View>
+
+          <View className={styles.formItem}>
             <Text className={styles.label}>邀请码</Text>
             <View className={styles.inputWrap}>
               <Input
@@ -204,6 +219,20 @@ const VerifyPage: React.FC = () => {
               />
             </View>
           </View>
+
+          {selectedRole === 'parent' && (
+            <View className={styles.formItem}>
+              <Text className={styles.label}>孩子姓名（球员）</Text>
+              <View className={styles.inputWrap}>
+                <Input
+                  className={styles.input}
+                  placeholder='请输入孩子的姓名'
+                  value={playerName}
+                  onInput={e => setPlayerName(e.detail.value)}
+                />
+              </View>
+            </View>
+          )}
 
           <View className={styles.tipCard} style={{ marginTop: 0 }}>
             <Text className={styles.tipTitle}>💡 如何获取邀请码</Text>

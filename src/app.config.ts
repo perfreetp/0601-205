@@ -10,7 +10,9 @@ export default defineAppConfig({
     'pages/parent/index',
     'pages/chat/index',
     'pages/season/index',
-    'pages/verify/index'
+    'pages/verify/index',
+    'pages/collection/index',
+    'pages/collectionDetail/index'
   ],
   window: {
     backgroundTextStyle: 'light',

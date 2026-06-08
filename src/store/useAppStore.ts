@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { User, VideoClip, Comment, Message, DownloadRequest, ActionType } from '@/types';
+import type { User, VideoClip, Comment, Message, DownloadRequest, ActionType, VideoCollection } from '@/types';
 import { currentUser as defaultUser, comments as defaultComments, messages as defaultMessages, downloadRequests as defaultDownloadRequests } from '@/data/interactions';
 import { videos as defaultVideos } from '@/data/videos';
 
@@ -13,6 +13,7 @@ export interface ClipDraft {
 interface AppState {
   currentUser: User;
   videos: VideoClip[];
+  collections: VideoCollection[];
   comments: Comment[];
   messages: Message[];
   downloadRequests: DownloadRequest[];
@@ -33,8 +34,17 @@ interface AppState {
     allowShare: boolean;
     minorVisible: boolean;
     matchId?: string;
+    trainingDate?: string;
+    trainingTopic?: string;
     thumbnail?: string;
     duration?: number;
+  }) => void;
+  createCollection: (data: {
+    title: string;
+    videoIds: string[];
+    matchId?: string;
+    trainingDate?: string;
+    description?: string;
   }) => void;
   verifyUser: (data: { teamId?: string; role: User['role'] }) => void;
 }
@@ -42,6 +52,7 @@ interface AppState {
 export const useAppStore = create<AppState>((set, get) => ({
   currentUser: defaultUser,
   videos: defaultVideos,
+  collections: [],
   comments: defaultComments,
   messages: defaultMessages,
   downloadRequests: defaultDownloadRequests,
@@ -125,6 +136,8 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   addVideo: (data) => {
     const { currentUser, videos } = get();
+    const now = new Date();
+    const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
     const newVideo: VideoClip = {
       id: `v_${Date.now()}`,
       title: data.title,
@@ -132,6 +145,8 @@ export const useAppStore = create<AppState>((set, get) => ({
       duration: data.duration || 15,
       videoUrl: '',
       matchId: data.matchId,
+      trainingDate: data.matchId ? undefined : (data.trainingDate || todayStr),
+      trainingTopic: data.matchId ? undefined : (data.trainingTopic || '日常训练'),
       playerIds: data.playerIds,
       actionType: data.actionType,
       scoreText: data.scoreText,
@@ -145,6 +160,24 @@ export const useAppStore = create<AppState>((set, get) => ({
       minorVisible: data.minorVisible
     };
     set({ videos: [newVideo, ...videos], clipDraft: null });
+  },
+
+  createCollection: (data) => {
+    const { currentUser, videos, collections } = get();
+    const coverVideo = data.videoIds.length > 0 ? videos.find(v => v.id === data.videoIds[0]) : undefined;
+    const newCollection: VideoCollection = {
+      id: `col_${Date.now()}`,
+      title: data.title,
+      cover: coverVideo?.thumbnail || 'https://picsum.photos/id/1058/400/300',
+      videoIds: data.videoIds,
+      matchId: data.matchId,
+      trainingDate: data.trainingDate,
+      createdBy: currentUser.id,
+      createdByName: currentUser.name,
+      createdAt: new Date().toLocaleString('zh-CN'),
+      description: data.description
+    };
+    set({ collections: [newCollection, ...collections] });
   },
 
   verifyUser: (data) => {
