@@ -219,3 +219,277 @@
   color: $color-text-tertiary;
   font-size: $font-size-md;
 }
+
+.headerDesc {
+  display: block;
+  margin-top: $spacing-sm;
+  font-size: $font-size-sm;
+  opacity: 0.9;
+}
+
+.headerActions {
+  display: flex;
+  gap: $spacing-sm;
+  margin-top: $spacing-lg;
+}
+
+.headerActionBtn {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  background: rgba(255, 255, 255, 0.2);
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-round;
+  color: $color-text-white;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+}
+
+.headerActionIcon {
+  font-size: $font-size-md;
+}
+
+.headerActionText {
+  font-size: $font-size-sm;
+}
+
+.playerCardWrap {
+  position: relative;
+}
+
+.playerCard {
+  text-align: center;
+  padding: $spacing-sm;
+  border-radius: $radius-md;
+  transition: all $transition-base;
+  border: 2rpx solid transparent;
+}
+
+.playerCardActive {
+  background: $color-bg-tag;
+  border-color: $color-primary;
+}
+
+.playerClipsList {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 560rpx;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.15);
+  padding: $spacing-sm;
+  z-index: 10;
+  margin-top: $spacing-xs;
+  max-height: 480rpx;
+  overflow-y: auto;
+}
+
+.playerClipItem {
+  display: flex;
+  align-items: center;
+  padding: $spacing-xs;
+  border-radius: $radius-sm;
+  gap: $spacing-sm;
+
+  &:active {
+    background: $color-bg-page;
+  }
+}
+
+.playerClipIndex {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+  width: 48rpx;
+  flex-shrink: 0;
+}
+
+.playerClipThumb {
+  width: 80rpx;
+  height: 60rpx;
+  border-radius: $radius-sm;
+  flex-shrink: 0;
+}
+
+.playerClipInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.playerClipTitle {
+  font-size: $font-size-xs;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+  margin-bottom: 4rpx;
+  @include text-ellipsis;
+}
+
+.playerClipMeta {
+  font-size: 20rpx;
+  color: $color-text-tertiary;
+}
+
+.nowPlayingBadge {
+  position: absolute;
+  right: $spacing-sm;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: $color-text-white;
+  font-size: 20rpx;
+  font-weight: $font-weight-semibold;
+  padding: 4rpx 16rpx;
+  border-radius: $radius-round;
+}
+
+.shareMask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $page-padding;
+}
+
+.shareCard {
+  width: 100%;
+  background: $color-bg-card;
+  border-radius: $radius-xl;
+  overflow: hidden;
+  max-width: 620rpx;
+}
+
+.shareCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-md $spacing-lg;
+  border-bottom: 1rpx solid $color-divider;
+}
+
+.shareCardTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.shareCardClose {
+  font-size: $font-size-xxl;
+  color: $color-text-tertiary;
+  line-height: 1;
+  padding: 0 $spacing-sm;
+}
+
+.shareCardBody {
+  padding: $spacing-lg;
+}
+
+.shareCardCover {
+  width: 100%;
+  height: 320rpx;
+  border-radius: $radius-lg;
+  margin-bottom: $spacing-md;
+}
+
+.shareCardInfo {
+  text-align: center;
+}
+
+.shareCardName {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: $spacing-xs;
+}
+
+.shareCardDesc {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  display: block;
+  margin-bottom: $spacing-md;
+}
+
+.shareCardPlayers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: -$spacing-sm;
+  margin-bottom: $spacing-md;
+}
+
+.shareCardPlayerAvatar {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: $radius-round;
+  border: 3rpx solid $color-bg-card;
+  margin-left: -16rpx;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+.shareCardMore {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-left: $spacing-sm;
+}
+
+.shareCardNotice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  background: $color-bg-page;
+  padding: $spacing-sm;
+  border-radius: $radius-md;
+}
+
+.shareCardNoticeIcon {
+  font-size: $font-size-sm;
+}
+
+.shareCardNoticeText {
+  font-size: 20rpx;
+  color: $color-text-tertiary;
+}
+
+.shareCardActions {
+  display: flex;
+  gap: $spacing-sm;
+  padding: $spacing-md $spacing-lg $spacing-lg;
+}
+
+.shareCardCancel {
+  @include button-reset;
+  flex: 1;
+  height: $button-height-lg;
+  background: $color-bg-page;
+  color: $color-text-secondary;
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  border-radius: $radius-button;
+}
+
+.shareCardConfirm {
+  @include button-reset;
+  flex: 2;
+  height: $button-height-lg;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: $color-text-white;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  border-radius: $radius-button;
+}
+
+.shareCardConfirmDisabled {
+  opacity: 0.5;
+}
