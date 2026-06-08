@@ -54,15 +54,21 @@ const InteractionPage: React.FC = () => {
       Taro.showToast({ title: '家长设置已屏蔽外部转发', icon: 'none' });
       return;
     }
-    if (currentUser.minorVisibleRange === 'none' && video.minorVisible) {
-      Taro.showToast({ title: '该视频包含未成年人内容，仅自己可见', icon: 'none' });
+    if (video.minorVisible && currentUser.minorVisibleRange === 'team') {
+      Taro.showToast({ title: '未成年人内容仅队内可见，禁止外部转发', icon: 'none' });
+      return;
+    }
+    if (currentUser.minorVisibleRange === 'none') {
+      Taro.showToast({ title: '已限制所有外部分享', icon: 'none' });
       return;
     }
     console.log('[InteractionPage] 分享视频');
     Taro.showToast({ title: '分享功能开发中', icon: 'none' });
   };
 
-  const canShare = video.allowShare && currentUser.allowExternalShare;
+  const hasMinorContent = video.minorVisible;
+  const minorRangeAllowsShare = !hasMinorContent || currentUser.minorVisibleRange === 'all';
+  const canShare = video.allowShare && currentUser.allowExternalShare && minorRangeAllowsShare && currentUser.minorVisibleRange !== 'none';
 
   const handleRequestDownload = () => {
     requestDownload(video.id, video.title);
@@ -115,7 +121,7 @@ const InteractionPage: React.FC = () => {
             </View>
             <View className={styles.actionItem}>
               <Text className={styles.actionIcon}>💬</Text>
-              <Text className={styles.actionText}>{comments.length}</Text>
+              <Text className={styles.actionText}>{video.commentCount}</Text>
             </View>
             {canShare && (
               <View className={styles.actionItem} onClick={handleShare}>
@@ -137,7 +143,7 @@ const InteractionPage: React.FC = () => {
 
           <View className={styles.commentsHeader}>
             <Text className={styles.commentsTitle}>评论互动</Text>
-            <Text className={styles.commentsCount}>共 {comments.length} 条</Text>
+            <Text className={styles.commentsCount}>共 {video.commentCount} 条</Text>
           </View>
 
           {comments.length > 0 ? (

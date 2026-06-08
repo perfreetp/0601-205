@@ -282,3 +282,119 @@
   color: $color-primary;
   padding: $spacing-xs $spacing-sm;
 }
+
+.clipInfoCard {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.08) 0%, rgba(255, 107, 53, 0.03) 100%);
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  border: 2rpx solid rgba(255, 107, 53, 0.2);
+}
+
+.clipTimeRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-sm;
+}
+
+.clipTimeBox,
+.clipDurationBox {
+  flex: 1;
+  background: $color-bg-card;
+  border-radius: $radius-sm;
+  padding: $spacing-sm $spacing-xs;
+  text-align: center;
+}
+
+.clipTimeLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  display: block;
+  margin-bottom: 4rpx;
+}
+
+.clipTimeValue {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+}
+
+.clipArrow {
+  font-size: $font-size-lg;
+  color: $color-text-tertiary;
+  font-weight: $font-weight-bold;
+}
+
+.reClipBtn {
+  display: inline-block;
+  font-size: $font-size-sm;
+  color: $color-primary;
+  padding: $spacing-xs $spacing-md;
+  background: rgba(255, 107, 53, 0.1);
+  border-radius: $radius-round;
+  margin-top: $spacing-xs;
+}
+
+.typeSwitch {
+  display: flex;
+  background: $color-bg-page;
+  border-radius: $radius-md;
+  padding: $spacing-xs;
+}
+
+.typeSwitchItem {
+  flex: 1;
+  padding: $spacing-sm;
+  text-align: center;
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  border-radius: $radius-sm;
+  transition: all $transition-base;
+}
+
+.typeSwitchActive {
+  background: $color-bg-card;
+  color: $color-primary;
+  font-weight: $font-weight-semibold;
+  box-shadow: $shadow-card;
+}
+
+.matchList {
+  max-height: 400rpx;
+  overflow-y: auto;
+}
+
+.matchItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-md;
+  background: $color-bg-page;
+  border-radius: $radius-md;
+  margin-bottom: $spacing-sm;
+  border: 2rpx solid transparent;
+  transition: all $transition-base;
+}
+
+.matchItemActive {
+  border-color: $color-primary;
+  background: $color-bg-tag;
+}
+
+.matchTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+  margin-bottom: 4rpx;
+}
+
+.matchSub {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.matchCheck {
+  font-size: $font-size-xl;
+  color: $color-primary;
+  font-weight: $font-weight-bold;
+}

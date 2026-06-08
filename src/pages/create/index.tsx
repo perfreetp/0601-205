@@ -1,18 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useDidShow } from '@tarojs/taro';
 import { View, Text, Image, Input, ScrollView, Switch, Button } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import classnames from 'classnames';
 import { getPlayersByTeam } from '@/data/players';
-import { matches } from '@/data/matches';
+import { getMatchesByTeam } from '@/data/matches';
 import { actionTypeLabels } from '@/data/videos';
 import { currentTeamId } from '@/data/teams';
 import { useAppStore } from '@/store/useAppStore';
 import type { ActionType } from '@/types';
 import styles from './index.module.scss';
 
+const parseTimeToSeconds = (time: string): number => {
+  const parts = time.split(':');
+  if (parts.length !== 2) return 0;
+  const mm = parseInt(parts[0], 10);
+  const ss = parseInt(parts[1], 10);
+  if (isNaN(mm) || isNaN(ss)) return 0;
+  return mm * 60 + ss;
+};
+
 const CreatePage: React.FC = () => {
   const players = getPlayersByTeam(currentTeamId);
+  const teamMatches = getMatchesByTeam(currentTeamId);
   const { currentUser, clipDraft, addVideo } = useAppStore();
 
   const [title, setTitle] = useState('');
@@ -22,12 +32,24 @@ const CreatePage: React.FC = () => {
   const [opponentScore, setOpponentScore] = useState('');
   const [allowShare, setAllowShare] = useState(false);
   const [minorVisible, setMinorVisible] = useState(true);
-  const [selectedMatch, setSelectedMatch] = useState(matches[0]?.id || '');
+  const [selectedMatch, setSelectedMatch] = useState<string>('');
+  const [isTraining, setIsTraining] = useState(true);
   const [draftApplied, setDraftApplied] = useState(false);
+  const [clipStartTime, setClipStartTime] = useState('');
+  const [clipEndTime, setClipEndTime] = useState('');
+
+  const clipDuration = useMemo(() => {
+    if (!clipStartTime || !clipEndTime) return 0;
+    const start = parseTimeToSeconds(clipStartTime);
+    const end = parseTimeToSeconds(clipEndTime);
+    return Math.max(1, end - start);
+  }, [clipStartTime, clipEndTime]);
 
   useDidShow(() => {
     if (clipDraft && !draftApplied) {
       console.log('[CreatePage] 接收到剪辑数据:', clipDraft);
+      setClipStartTime(clipDraft.startTime);
+      setClipEndTime(clipDraft.endTime);
       if (clipDraft.subtitle && clipDraft.subtitle.includes('-')) {
         const parts = clipDraft.subtitle.split('-');
         if (parts.length === 2) {
@@ -105,6 +127,10 @@ const CreatePage: React.FC = () => {
       Taro.showToast({ title: '请选择相关球员', icon: 'none' });
       return;
     }
+    if (!isTraining && !selectedMatch) {
+      Taro.showToast({ title: '请选择关联比赛', icon: 'none' });
+      return;
+    }
     const scoreText = ourScore && opponentScore ? `${ourScore}-${opponentScore}` : undefined;
     addVideo({
       title: title.trim(),
@@ -113,9 +139,10 @@ const CreatePage: React.FC = () => {
       scoreText,
       allowShare,
       minorVisible,
-      matchId: selectedMatch
+      matchId: isTraining ? undefined : selectedMatch,
+      duration: clipDuration > 0 ? clipDuration : undefined
     });
-    console.log('[CreatePage] 视频已发布');
+    console.log('[CreatePage] 视频已发布，时长:', clipDuration, '比赛:', isTraining ? '训练日' : selectedMatch);
     setDraftApplied(false);
     Taro.showToast({ title: '发布成功！', icon: 'success' });
     setTimeout(() => {
@@ -146,6 +173,35 @@ const CreatePage: React.FC = () => {
       <View className={styles.section}>
         <Text className={styles.sectionTitle}>视频信息</Text>
         <View className={styles.formCard}>
+          {clipStartTime && clipEndTime && (
+            <View className={styles.formItem}>
+              <Text className={styles.label}>剪辑片段</Text>
+              <View className={styles.clipInfoCard}>
+                <View className={styles.clipTimeRow}>
+                  <View className={styles.clipTimeBox}>
+                    <Text className={styles.clipTimeLabel}>开始</Text>
+                    <Text className={styles.clipTimeValue}>{clipStartTime}</Text>
+                  </View>
+                  <Text className={styles.clipArrow}>→</Text>
+                  <View className={styles.clipTimeBox}>
+                    <Text className={styles.clipTimeLabel}>结束</Text>
+                    <Text className={styles.clipTimeValue}>{clipEndTime}</Text>
+                  </View>
+                  <View className={styles.clipDurationBox}>
+                    <Text className={styles.clipTimeLabel}>时长</Text>
+                    <Text className={styles.clipTimeValue}>{clipDuration}秒</Text>
+                  </View>
+                </View>
+                <View
+                  className={styles.reClipBtn}
+                  onClick={() => Taro.navigateTo({ url: '/pages/clip/index' })}
+                >
+                  重新剪辑
+                </View>
+              </View>
+            </View>
+          )}
+
           <View className={styles.formItem}>
             <Text className={styles.label}>视频标题</Text>
             <View className={styles.inputWrap}>
@@ -157,6 +213,47 @@ const CreatePage: React.FC = () => {
               />
             </View>
           </View>
+
+          <View className={styles.formItem}>
+            <Text className={styles.label}>关联类型</Text>
+            <View className={styles.typeSwitch}>
+              <View
+                className={classnames(styles.typeSwitchItem, isTraining && styles.typeSwitchActive)}
+                onClick={() => { setIsTraining(true); setSelectedMatch(''); }}
+              >
+                🏋️ 训练日
+              </View>
+              <View
+                className={classnames(styles.typeSwitchItem, !isTraining && styles.typeSwitchActive)}
+                onClick={() => setIsTraining(false)}
+              >
+                🏆 正式比赛
+              </View>
+            </View>
+          </View>
+
+          {!isTraining && (
+            <View className={styles.formItem}>
+              <Text className={styles.label}>选择比赛</Text>
+              <View className={styles.matchList}>
+                {teamMatches.map(match => (
+                  <View
+                    key={match.id}
+                    className={classnames(styles.matchItem, selectedMatch === match.id && styles.matchItemActive)}
+                    onClick={() => setSelectedMatch(match.id)}
+                  >
+                    <View className={styles.matchInfo}>
+                      <Text className={styles.matchTitle}>{match.title}</Text>
+                      <Text className={styles.matchSub}>
+                        {match.date} · VS {match.opponent} · {match.ourScore}-{match.opponentScore}
+                      </Text>
+                    </View>
+                    {selectedMatch === match.id && <Text className={styles.matchCheck}>✓</Text>}
+                  </View>
+                ))}
+              </View>
+            </View>
+          )}
 
           <View className={styles.formItem}>
             <Text className={styles.label}>动作类型</Text>

@@ -24,6 +24,8 @@ const VerifyPage: React.FC = () => {
   const [phone, setPhone] = useState('');
 
   const handleSubmit = () => {
+    let finalTeamId = selectedTeam;
+
     if (activeTab === 'join') {
       if (!selectedTeam) {
         Taro.showToast({ title: '请选择队伍', icon: 'none' });
@@ -38,15 +40,23 @@ const VerifyPage: React.FC = () => {
         return;
       }
     } else {
-      if (!verifyCode.trim()) {
+      const code = verifyCode.trim();
+      if (!code) {
         Taro.showToast({ title: '请输入邀请码', icon: 'none' });
         return;
       }
+      const matchedTeam = teams.find(t => t.joinCode.toUpperCase() === code.toUpperCase());
+      if (!matchedTeam) {
+        Taro.showToast({ title: '邀请码错误，请检查后重试', icon: 'none', duration: 2500 });
+        return;
+      }
+      finalTeamId = matchedTeam.id;
+      Taro.showToast({ title: `已匹配：${matchedTeam.name}`, icon: 'success', duration: 1000 });
     }
 
     console.log('[VerifyPage] 提交验证:', {
       activeTab,
-      selectedTeam,
+      finalTeamId,
       selectedRole,
       realName,
       playerName,
@@ -54,18 +64,20 @@ const VerifyPage: React.FC = () => {
     });
 
     verifyUser({
-      teamId: selectedTeam || undefined,
+      teamId: finalTeamId || undefined,
       role: selectedRole
     });
 
-    Taro.showToast({
-      title: '验证成功！',
-      icon: 'success',
-      duration: 2000
-    });
     setTimeout(() => {
-      Taro.switchTab({ url: '/pages/mine/index' });
-    }, 1500);
+      Taro.showToast({
+        title: '验证成功！',
+        icon: 'success',
+        duration: 2000
+      });
+      setTimeout(() => {
+        Taro.switchTab({ url: '/pages/mine/index' });
+      }, 1500);
+    }, activeTab === 'code' ? 800 : 0);
   };
 
   return (
