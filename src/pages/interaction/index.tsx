@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, Image, Input, Button, ScrollView } from '@tarojs/components';
 import Taro, { useRouter } from '@tarojs/taro';
 import classnames from 'classnames';
-import { getVideoById, actionTypeLabels, getVideosByPlayer } from '@/data/videos';
+import { actionTypeLabels } from '@/data/videos';
 import { getPlayerById } from '@/data/players';
-import { getCommentsByVideo } from '@/data/interactions';
 import { useAppStore } from '@/store/useAppStore';
 import CommentItem from '@/components/CommentItem';
 import EmptyState from '@/components/EmptyState';
@@ -13,16 +12,13 @@ import styles from './index.module.scss';
 const InteractionPage: React.FC = () => {
   const router = useRouter();
   const videoId = router.params.id || 'v1';
-  const video = getVideoById(videoId as string);
-  const { likedVideos, toggleLike, addComment, requestDownload } = useAppStore();
+  const { videos, comments: allComments, likedVideos, toggleLike, addComment, requestDownload, currentUser } = useAppStore();
 
   const [commentText, setCommentText] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
-  const comments = getCommentsByVideo(videoId as string);
 
-  useEffect(() => {
-    console.log('[InteractionPage] 视频详情:', videoId);
-  }, [videoId]);
+  const video = useMemo(() => videos.find(v => v.id === videoId), [videos, videoId]);
+  const comments = useMemo(() => allComments.filter(c => c.videoId === videoId), [allComments, videoId]);
 
   if (!video) {
     return (
@@ -54,9 +50,19 @@ const InteractionPage: React.FC = () => {
       Taro.showToast({ title: '该视频仅队内可见', icon: 'none' });
       return;
     }
+    if (!currentUser.allowExternalShare) {
+      Taro.showToast({ title: '家长设置已屏蔽外部转发', icon: 'none' });
+      return;
+    }
+    if (currentUser.minorVisibleRange === 'none' && video.minorVisible) {
+      Taro.showToast({ title: '该视频包含未成年人内容，仅自己可见', icon: 'none' });
+      return;
+    }
     console.log('[InteractionPage] 分享视频');
     Taro.showToast({ title: '分享功能开发中', icon: 'none' });
   };
+
+  const canShare = video.allowShare && currentUser.allowExternalShare;
 
   const handleRequestDownload = () => {
     requestDownload(video.id, video.title);
@@ -111,10 +117,12 @@ const InteractionPage: React.FC = () => {
               <Text className={styles.actionIcon}>💬</Text>
               <Text className={styles.actionText}>{comments.length}</Text>
             </View>
-            <View className={styles.actionItem} onClick={handleShare}>
-              <Text className={styles.actionIcon}>🔗</Text>
-              <Text className={styles.actionText}>分享</Text>
-            </View>
+            {canShare && (
+              <View className={styles.actionItem} onClick={handleShare}>
+                <Text className={styles.actionIcon}>🔗</Text>
+                <Text className={styles.actionText}>分享</Text>
+              </View>
+            )}
             <View className={styles.actionItem}>
               <Text className={styles.actionIcon}>⭐</Text>
               <Text className={styles.actionText}>收藏</Text>

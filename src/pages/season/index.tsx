@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, Image, Button, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import classnames from 'classnames';
-import { playRanks, videos } from '@/data/videos';
+import { playRanks } from '@/data/videos';
 import { getMatchesByTeam } from '@/data/matches';
 import { currentTeamId } from '@/data/teams';
+import { useAppStore } from '@/store/useAppStore';
 import styles from './index.module.scss';
 
 const SeasonPage: React.FC = () => {
   const [showLink, setShowLink] = useState(false);
+  const { videos } = useAppStore();
   const matches = getMatchesByTeam(currentTeamId);
   const wins = matches.filter(m => m.isWin).length;
-  const totalViews = playRanks.reduce((sum, r) => sum + r.viewCount, 0);
-  const totalLikes = playRanks.reduce((sum, r) => sum + r.likeCount, 0);
+  const totalViews = useMemo(() => videos.reduce((sum, v) => sum + v.viewCount, 0), [videos]);
+  const totalLikes = useMemo(() => videos.reduce((sum, v) => sum + v.likeCount, 0), [videos]);
 
   const handleExport = () => {
     console.log('[SeasonPage] 导出赛季回顾');

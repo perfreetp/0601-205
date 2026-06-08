@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, Image, Input, ScrollView, Button } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import classnames from 'classnames';
 import { getPlayersByTeam } from '@/data/players';
-import { getVideosByPlayer } from '@/data/videos';
 import { currentTeamId } from '@/data/teams';
+import { useAppStore } from '@/store/useAppStore';
 import VideoCard from '@/components/VideoCard';
 import styles from './index.module.scss';
 
@@ -12,13 +12,20 @@ const PlayerPage: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
   const players = getPlayersByTeam(currentTeamId);
+  const { videos } = useAppStore();
 
   const filteredPlayers = players.filter(p =>
     p.name.includes(searchText) || p.position.includes(searchText)
   );
 
   const selectedPlayer = players.find(p => p.id === selectedPlayerId);
-  const playerVideos = selectedPlayer ? getVideosByPlayer(selectedPlayer.id) : [];
+  const playerVideos = selectedPlayer
+    ? videos.filter(v => v.playerIds.includes(selectedPlayer.id))
+    : [];
+
+  const getVideoCountByPlayer = useMemo(() => (playerId: string) => {
+    return videos.filter(v => v.playerIds.includes(playerId)).length;
+  }, [videos]);
 
   const handlePlayerClick = (playerId: string) => {
     setSelectedPlayerId(selectedPlayerId === playerId ? null : playerId);
@@ -74,7 +81,7 @@ const PlayerPage: React.FC = () => {
               <Text className={styles.playerName}>{player.name}</Text>
               <Text className={styles.playerPosition}>{player.position}</Text>
               <Text className={styles.playerStats}>
-                精彩片段 {getVideosByPlayer(player.id).length} 条
+                精彩片段 {getVideoCountByPlayer(player.id)} 条
               </Text>
             </View>
             <View className={classnames(

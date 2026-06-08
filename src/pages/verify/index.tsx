@@ -4,18 +4,19 @@ import Taro from '@tarojs/taro';
 import classnames from 'classnames';
 import { useAppStore } from '@/store/useAppStore';
 import { teams } from '@/data/teams';
+import type { User } from '@/types';
 import styles from './index.module.scss';
 
-const roles = [
+const roles: { key: User['role']; label: string }[] = [
   { key: 'player', label: '球员' },
   { key: 'parent', label: '家长' },
   { key: 'coach', label: '教练' }
 ];
 
 const VerifyPage: React.FC = () => {
-  const { currentUser } = useAppStore();
+  const { currentUser, verifyUser } = useAppStore();
   const [activeTab, setActiveTab] = useState<'join' | 'code'>('join');
-  const [selectedRole, setSelectedRole] = useState(currentUser.role);
+  const [selectedRole, setSelectedRole] = useState<User['role']>(currentUser.role);
   const [selectedTeam, setSelectedTeam] = useState(currentUser.teamId || '');
   const [playerName, setPlayerName] = useState('');
   const [verifyCode, setVerifyCode] = useState('');
@@ -52,49 +53,41 @@ const VerifyPage: React.FC = () => {
       verifyCode
     });
 
+    verifyUser({
+      teamId: selectedTeam || undefined,
+      role: selectedRole
+    });
+
     Taro.showToast({
-      title: '验证申请已提交',
+      title: '验证成功！',
       icon: 'success',
       duration: 2000
     });
+    setTimeout(() => {
+      Taro.switchTab({ url: '/pages/mine/index' });
+    }, 1500);
   };
 
-  if (currentUser.isVerified) {
-    return (
-      <ScrollView className={styles.page} scrollY>
+  return (
+    <ScrollView className={styles.page} scrollY>
+      {currentUser.isVerified ? (
         <View className={classnames(styles.statusCard, styles.verifiedCard)}>
           <Text className={styles.statusIcon}>✅</Text>
           <Text className={styles.statusTitle}>已通过身份验证</Text>
           <Text className={styles.statusText}>
-            您的身份已通过验证，可以正常使用所有功能。{'\n'}
-            如有问题请联系球队管理员。
+            您已通过验证，可在下方加入其他队伍或切换身份。
           </Text>
         </View>
-
-        <View className={styles.tipCard}>
-          <Text className={styles.tipTitle}>💡 温馨提示</Text>
-          <Text className={styles.tipText}>
-            作为已验证成员，您可以：{'\n'}
-            • 查看队内所有训练和比赛视频{'\n'}
-            • 上传和剪辑精彩片段{'\n'}
-            • 与教练私信沟通{'\n'}
-            • 申请下载原片
+      ) : (
+        <View className={styles.statusCard}>
+          <Text className={styles.statusIcon}>⏳</Text>
+          <Text className={styles.statusTitle}>等待身份验证</Text>
+          <Text className={styles.statusText}>
+            完成以下验证后，即可解锁全部功能。{'\n'}
+            验证通常在24小时内完成。
           </Text>
         </View>
-      </ScrollView>
-    );
-  }
-
-  return (
-    <ScrollView className={styles.page} scrollY>
-      <View className={styles.statusCard}>
-        <Text className={styles.statusIcon}>⏳</Text>
-        <Text className={styles.statusTitle}>等待身份验证</Text>
-        <Text className={styles.statusText}>
-          完成以下验证后，即可解锁全部功能。{'\n'}
-          验证通常在24小时内完成。
-        </Text>
-      </View>
+      )}
 
       <View className={styles.tabs}>
         <View

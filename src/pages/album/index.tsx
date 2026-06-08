@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, Image, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import classnames from 'classnames';
 import { matches, getMatchesByTeam } from '@/data/matches';
-import { getVideosByMatch } from '@/data/videos';
 import { playRanks } from '@/data/videos';
 import { currentTeamId } from '@/data/teams';
 import { useAppStore } from '@/store/useAppStore';
@@ -13,6 +12,10 @@ const AlbumPage: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<string>('all');
   const teamMatches = getMatchesByTeam(currentTeamId);
   const { videos } = useAppStore();
+
+  const getVideosByMatch = useMemo(() => (matchId: string) => {
+    return videos.filter(v => v.matchId === matchId);
+  }, [videos]);
 
   const filters = [
     { key: 'all', label: '全部' },

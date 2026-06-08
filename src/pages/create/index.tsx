@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDidShow } from '@tarojs/taro';
 import { View, Text, Image, Input, ScrollView, Switch, Button } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import classnames from 'classnames';
@@ -7,11 +8,12 @@ import { matches } from '@/data/matches';
 import { actionTypeLabels } from '@/data/videos';
 import { currentTeamId } from '@/data/teams';
 import { useAppStore } from '@/store/useAppStore';
+import type { ActionType } from '@/types';
 import styles from './index.module.scss';
 
 const CreatePage: React.FC = () => {
   const players = getPlayersByTeam(currentTeamId);
-  const { currentUser } = useAppStore();
+  const { currentUser, clipDraft, addVideo } = useAppStore();
 
   const [title, setTitle] = useState('');
   const [selectedAction, setSelectedAction] = useState<string>('');
@@ -21,6 +23,22 @@ const CreatePage: React.FC = () => {
   const [allowShare, setAllowShare] = useState(false);
   const [minorVisible, setMinorVisible] = useState(true);
   const [selectedMatch, setSelectedMatch] = useState(matches[0]?.id || '');
+  const [draftApplied, setDraftApplied] = useState(false);
+
+  useDidShow(() => {
+    if (clipDraft && !draftApplied) {
+      console.log('[CreatePage] 接收到剪辑数据:', clipDraft);
+      if (clipDraft.subtitle && clipDraft.subtitle.includes('-')) {
+        const parts = clipDraft.subtitle.split('-');
+        if (parts.length === 2) {
+          setOurScore(parts[0]);
+          setOpponentScore(parts[1]);
+        }
+      }
+      setDraftApplied(true);
+      Taro.showToast({ title: '剪辑信息已带入', icon: 'success' });
+    }
+  });
 
   const handleTogglePlayer = (playerId: string) => {
     setSelectedPlayers(prev =>
@@ -79,20 +97,27 @@ const CreatePage: React.FC = () => {
       Taro.showToast({ title: '请输入视频标题', icon: 'none' });
       return;
     }
+    if (!selectedAction) {
+      Taro.showToast({ title: '请选择动作类型', icon: 'none' });
+      return;
+    }
     if (selectedPlayers.length === 0) {
       Taro.showToast({ title: '请选择相关球员', icon: 'none' });
       return;
     }
-    console.log('[CreatePage] 提交视频:', {
-      title,
-      selectedAction,
-      selectedPlayers,
-      scoreText: ourScore && opponentScore ? `${ourScore}-${opponentScore}` : undefined,
+    const scoreText = ourScore && opponentScore ? `${ourScore}-${opponentScore}` : undefined;
+    addVideo({
+      title: title.trim(),
+      actionType: selectedAction as ActionType,
+      playerIds: selectedPlayers,
+      scoreText,
       allowShare,
       minorVisible,
-      uploader: currentUser.name
+      matchId: selectedMatch
     });
-    Taro.showToast({ title: '上传成功！', icon: 'success' });
+    console.log('[CreatePage] 视频已发布');
+    setDraftApplied(false);
+    Taro.showToast({ title: '发布成功！', icon: 'success' });
     setTimeout(() => {
       Taro.switchTab({ url: '/pages/home/index' });
     }, 1500);
