@@ -1,0 +1,224 @@
+import type { VideoClip, PlayRank } from '@/types';
+
+export const actionTypeLabels: Record<string, string> = {
+  goal: '进球',
+  assist: '助攻',
+  defense: '防守',
+  dribble: '过人',
+  pass: '传球',
+  shoot: '射门',
+  save: '扑救',
+  tackle: '抢断',
+  other: '其他'
+};
+
+export const videos: VideoClip[] = [
+  {
+    id: 'v1',
+    title: '陈浩然精彩远射破门',
+    thumbnail: 'https://picsum.photos/id/1058/400/300',
+    duration: 15,
+    videoUrl: '',
+    matchId: 'm1',
+    playerIds: ['p1', 'p3'],
+    actionType: 'goal',
+    scoreText: '2-0',
+    uploaderId: 'u1',
+    uploaderName: '李明教练',
+    uploadTime: '2024-03-15 16:30',
+    viewCount: 328,
+    likeCount: 56,
+    commentCount: 12,
+    allowShare: false,
+    minorVisible: true
+  },
+  {
+    id: 'v2',
+    title: '刘子轩边路突破传中助攻',
+    thumbnail: 'https://picsum.photos/id/1060/400/300',
+    duration: 12,
+    videoUrl: '',
+    matchId: 'm1',
+    playerIds: ['p2', 'p9'],
+    actionType: 'assist',
+    scoreText: '1-0',
+    uploaderId: 'u1',
+    uploaderName: '李明教练',
+    uploadTime: '2024-03-15 16:45',
+    viewCount: 256,
+    likeCount: 42,
+    commentCount: 8,
+    allowShare: false,
+    minorVisible: true
+  },
+  {
+    id: 'v3',
+    title: '张天佑神勇扑出点球',
+    thumbnail: 'https://picsum.photos/id/1025/400/300',
+    duration: 20,
+    videoUrl: '',
+    matchId: 'm2',
+    playerIds: ['p5'],
+    actionType: 'save',
+    scoreText: '2-2',
+    uploaderId: 'u2',
+    uploaderName: '王助理',
+    uploadTime: '2024-03-22 17:10',
+    viewCount: 512,
+    likeCount: 89,
+    commentCount: 23,
+    allowShare: true,
+    minorVisible: true
+  },
+  {
+    id: 'v4',
+    title: '王梓涵中场精准长传',
+    thumbnail: 'https://picsum.photos/id/1074/400/300',
+    duration: 10,
+    videoUrl: '',
+    matchId: 'm3',
+    playerIds: ['p3', 'p6'],
+    actionType: 'pass',
+    scoreText: '1-0',
+    uploaderId: 'u1',
+    uploaderName: '李明教练',
+    uploadTime: '2024-03-29 15:20',
+    viewCount: 178,
+    likeCount: 31,
+    commentCount: 5,
+    allowShare: false,
+    minorVisible: true
+  },
+  {
+    id: 'v5',
+    title: '赵俊熙单刀赴会冷静推射',
+    thumbnail: 'https://picsum.photos/id/1062/400/300',
+    duration: 18,
+    videoUrl: '',
+    matchId: 'm3',
+    playerIds: ['p6', 'p3'],
+    actionType: 'goal',
+    scoreText: '3-0',
+    uploaderId: 'u1',
+    uploaderName: '李明教练',
+    uploadTime: '2024-03-29 16:00',
+    viewCount: 445,
+    likeCount: 78,
+    commentCount: 19,
+    allowShare: true,
+    minorVisible: true
+  },
+  {
+    id: 'v6',
+    title: '孙子豪关键位置防守拦截',
+    thumbnail: 'https://picsum.photos/id/1058/400/300',
+    duration: 8,
+    videoUrl: '',
+    matchId: 'm4',
+    playerIds: ['p7'],
+    actionType: 'defense',
+    scoreText: '0-0',
+    uploaderId: 'u2',
+    uploaderName: '王助理',
+    uploadTime: '2024-04-05 14:30',
+    viewCount: 134,
+    likeCount: 22,
+    commentCount: 3,
+    allowShare: false,
+    minorVisible: true
+  },
+  {
+    id: 'v7',
+    title: '吴雨泽头球破门扳平比分',
+    thumbnail: 'https://picsum.photos/id/1060/400/300',
+    duration: 14,
+    videoUrl: '',
+    matchId: 'm5',
+    playerIds: ['p9', 'p2'],
+    actionType: 'goal',
+    scoreText: '1-1',
+    uploaderId: 'u1',
+    uploaderName: '李明教练',
+    uploadTime: '2024-04-12 16:15',
+    viewCount: 389,
+    likeCount: 67,
+    commentCount: 15,
+    allowShare: true,
+    minorVisible: true
+  },
+  {
+    id: 'v8',
+    title: '周逸辰连续过人精彩表现',
+    thumbnail: 'https://picsum.photos/id/1025/400/300',
+    duration: 22,
+    videoUrl: '',
+    matchId: 'm5',
+    playerIds: ['p8'],
+    actionType: 'dribble',
+    scoreText: '3-2',
+    uploaderId: 'u2',
+    uploaderName: '王助理',
+    uploadTime: '2024-04-12 17:00',
+    viewCount: 567,
+    likeCount: 95,
+    commentCount: 28,
+    allowShare: true,
+    minorVisible: true
+  },
+  {
+    id: 'v9',
+    title: '郑皓文边线抢断快速反击',
+    thumbnail: 'https://picsum.photos/id/1074/400/300',
+    duration: 11,
+    videoUrl: '',
+    matchId: 'm6',
+    playerIds: ['p10', 'p1'],
+    actionType: 'tackle',
+    scoreText: '1-1',
+    uploaderId: 'u1',
+    uploaderName: '李明教练',
+    uploadTime: '2024-04-19 18:30',
+    viewCount: 234,
+    likeCount: 41,
+    commentCount: 9,
+    allowShare: false,
+    minorVisible: true
+  },
+  {
+    id: 'v10',
+    title: '训练日精彩射门集锦',
+    thumbnail: 'https://picsum.photos/id/1062/400/300',
+    duration: 45,
+    videoUrl: '',
+    playerIds: ['p1', 'p6', 'p9'],
+    actionType: 'shoot',
+    uploaderId: 'u1',
+    uploaderName: '李明教练',
+    uploadTime: '2024-04-20 10:00',
+    viewCount: 1024,
+    likeCount: 156,
+    commentCount: 42,
+    allowShare: false,
+    minorVisible: true
+  }
+];
+
+export const playRanks: PlayRank[] = [
+  { playerId: 'p8', playerName: '周逸辰', playerAvatar: 'https://picsum.photos/id/177/200/200', viewCount: 1256, likeCount: 167, clipCount: 8 },
+  { playerId: 'p5', playerName: '张天佑', playerAvatar: 'https://picsum.photos/id/1027/200/200', viewCount: 1102, likeCount: 145, clipCount: 5 },
+  { playerId: 'p1', playerName: '陈浩然', playerAvatar: 'https://picsum.photos/id/64/200/200', viewCount: 987, likeCount: 132, clipCount: 12 },
+  { playerId: 'p6', playerName: '赵俊熙', playerAvatar: 'https://picsum.photos/id/64/200/200', viewCount: 856, likeCount: 118, clipCount: 9 },
+  { playerId: 'p9', playerName: '吴雨泽', playerAvatar: 'https://picsum.photos/id/338/200/200', viewCount: 745, likeCount: 98, clipCount: 7 }
+];
+
+export const getVideosByMatch = (matchId: string): VideoClip[] => {
+  return videos.filter(v => v.matchId === matchId);
+};
+
+export const getVideosByPlayer = (playerId: string): VideoClip[] => {
+  return videos.filter(v => v.playerIds.includes(playerId));
+};
+
+export const getVideoById = (id: string): VideoClip | undefined => {
+  return videos.find(v => v.id === id);
+};

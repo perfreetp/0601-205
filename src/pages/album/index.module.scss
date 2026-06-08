@@ -1,0 +1,258 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  background: $color-bg-page;
+}
+
+.filterBar {
+  display: flex;
+  padding: $spacing-md $page-padding;
+  background: $color-bg-card;
+  border-bottom: 1rpx solid $color-divider;
+  gap: $spacing-sm;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.filterItem {
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-round;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  background: $color-bg-page;
+  white-space: nowrap;
+  transition: all $transition-base;
+}
+
+.activeFilter {
+  background: $color-primary;
+  color: $color-text-white;
+}
+
+.content {
+  padding: $spacing-md $page-padding;
+  padding-bottom: 120rpx;
+}
+
+.rankSection {
+  background: linear-gradient(135deg, $color-secondary 0%, $color-secondary-light 100%);
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-lg;
+  color: $color-text-white;
+}
+
+.rankHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.rankTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+}
+
+.rankMore {
+  font-size: $font-size-sm;
+  opacity: 0.8;
+}
+
+.rankList {
+  display: flex;
+  gap: $spacing-md;
+  overflow-x: auto;
+}
+
+.rankItem {
+  flex-shrink: 0;
+  width: 140rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rankNum {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4rpx 16rpx;
+  border-radius: $radius-round;
+  margin-bottom: $spacing-xs;
+}
+
+.rankAvatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: $radius-round;
+  margin-bottom: $spacing-xs;
+  border: 3rpx solid rgba(255, 255, 255, 0.5);
+}
+
+.rankName {
+  font-size: $font-size-xs;
+  margin-bottom: 4rpx;
+  @include text-ellipsis;
+  width: 100%;
+  text-align: center;
+}
+
+.rankStats {
+  font-size: 20rpx;
+  opacity: 0.8;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.sectionTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.matchCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+  overflow: hidden;
+  margin-bottom: $spacing-lg;
+}
+
+.matchCover {
+  position: relative;
+  width: 100%;
+  height: 280rpx;
+}
+
+.matchCoverImg {
+  width: 100%;
+  height: 100%;
+}
+
+.matchBadge {
+  position: absolute;
+  top: $spacing-sm;
+  left: $spacing-sm;
+  padding: 6rpx 16rpx;
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $color-text-white;
+}
+
+.winBadge {
+  background: $color-success;
+}
+
+.loseBadge {
+  background: $color-error;
+}
+
+.drawBadge {
+  background: $color-warning;
+}
+
+.matchInfo {
+  padding: $spacing-md $spacing-lg $spacing-lg;
+}
+
+.matchTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-sm;
+}
+
+.matchMeta {
+  display: flex;
+  align-items: center;
+  margin-bottom: $spacing-md;
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.matchMetaItem {
+  margin-right: $spacing-lg;
+}
+
+.matchScore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: $spacing-md;
+}
+
+.scoreTeam {
+  flex: 1;
+  text-align: center;
+}
+
+.teamName {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-bottom: $spacing-xs;
+}
+
+.teamScore {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+}
+
+.vsText {
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
+  padding: 0 $spacing-lg;
+}
+
+.videoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-sm;
+}
+
+.miniVideoCard {
+  position: relative;
+  border-radius: $radius-md;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+
+.miniThumb {
+  width: 100%;
+  height: 100%;
+}
+
+.miniOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: $spacing-sm;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+}
+
+.miniTitle {
+  font-size: 22rpx;
+  color: $color-text-white;
+  @include text-ellipsis;
+}
+
+.miniDuration {
+  position: absolute;
+  top: $spacing-xs;
+  right: $spacing-xs;
+  background: rgba(0, 0, 0, 0.7);
+  color: $color-text-white;
+  font-size: 20rpx;
+  padding: 2rpx 8rpx;
+  border-radius: 4rpx;
+}

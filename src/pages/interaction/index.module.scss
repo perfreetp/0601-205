@@ -1,0 +1,212 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding-bottom: 140rpx;
+}
+
+.videoArea {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  position: relative;
+}
+
+.videoThumb {
+  width: 100%;
+  height: 100%;
+}
+
+.playOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.playBtn {
+  width: 120rpx;
+  height: 120rpx;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: $radius-round;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56rpx;
+}
+
+.scoreOverlay {
+  position: absolute;
+  top: $spacing-md;
+  left: $spacing-md;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: $color-text-white;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  padding: $spacing-xs $spacing-md;
+  border-radius: $radius-sm;
+}
+
+.content {
+  padding: $spacing-lg $page-padding;
+}
+
+.videoInfo {
+  margin-bottom: $spacing-lg;
+}
+
+.title {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-sm;
+}
+
+.meta {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-bottom: $spacing-sm;
+}
+
+.tagRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-xs;
+  margin-bottom: $spacing-md;
+}
+
+.tag {
+  padding: 4rpx 16rpx;
+  border-radius: $radius-round;
+  font-size: $font-size-xs;
+}
+
+.actionTag {
+  background: $color-bg-tag;
+  color: $color-primary;
+}
+
+.playerTag {
+  background: $color-bg-blue;
+  color: $color-secondary;
+}
+
+.privacyTag {
+  background: rgba(0, 0, 0, 0.05);
+  color: $color-text-tertiary;
+}
+
+.actionBar {
+  display: flex;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-md;
+  box-shadow: $shadow-card;
+  margin-bottom: $spacing-lg;
+}
+
+.actionItem {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.8;
+    transform: scale(0.95);
+  }
+}
+
+.actionIcon {
+  font-size: 48rpx;
+  margin-bottom: 4rpx;
+}
+
+.actionText {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+}
+
+.liked {
+  .actionIcon {
+    color: $color-like;
+  }
+  .actionText {
+    color: $color-like;
+  }
+}
+
+.commentsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.commentsTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.commentsCount {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.inputBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: $color-bg-card;
+  padding: $spacing-md $page-padding;
+  padding-bottom: calc($spacing-md + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.inputWrap {
+  flex: 1;
+  background: $color-bg-page;
+  border-radius: $radius-button;
+  padding: $spacing-sm $spacing-lg;
+}
+
+.commentInput {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  width: 100%;
+}
+
+.sendBtn {
+  @include button-reset;
+  height: $button-height-md;
+  padding: 0 $spacing-xl;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: $color-text-white;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  border-radius: $radius-button;
+}
+
+.downloadBtn {
+  margin-top: $spacing-md;
+  @include button-reset;
+  width: 100%;
+  height: $button-height-md;
+  background: $color-bg-card;
+  color: $color-secondary;
+  font-size: $font-size-md;
+  border-radius: $radius-button;
+  border: 2rpx solid $color-secondary;
+}

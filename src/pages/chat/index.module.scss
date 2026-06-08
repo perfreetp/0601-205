@@ -1,0 +1,136 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  background: $color-bg-page;
+  display: flex;
+  flex-direction: column;
+}
+
+.chatArea {
+  flex: 1;
+  padding: $spacing-lg $page-padding;
+  padding-bottom: 180rpx;
+  overflow-y: auto;
+}
+
+.messageItem {
+  display: flex;
+  margin-bottom: $spacing-lg;
+}
+
+.self {
+  flex-direction: row-reverse;
+}
+
+.avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: $radius-round;
+  flex-shrink: 0;
+}
+
+.self .avatar {
+  margin-left: $spacing-md;
+}
+
+.other .avatar {
+  margin-right: $spacing-md;
+}
+
+.bubble {
+  max-width: 70%;
+  padding: $spacing-md $spacing-lg;
+  border-radius: $radius-lg;
+  font-size: $font-size-md;
+  line-height: $line-height-normal;
+  word-break: break-all;
+}
+
+.self .bubble {
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: $color-text-white;
+  border-top-right-radius: 8rpx;
+}
+
+.other .bubble {
+  background: $color-bg-card;
+  color: $color-text-primary;
+  border-top-left-radius: 8rpx;
+  box-shadow: $shadow-card;
+}
+
+.messageTime {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: $spacing-xs;
+  text-align: center;
+}
+
+.inputBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: $color-bg-card;
+  padding: $spacing-md $page-padding;
+  padding-bottom: calc($spacing-md + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.inputWrap {
+  flex: 1;
+  background: $color-bg-page;
+  border-radius: $radius-button;
+  padding: $spacing-sm $spacing-lg;
+}
+
+.messageInput {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  width: 100%;
+}
+
+.sendBtn {
+  @include button-reset;
+  height: $button-height-md;
+  padding: 0 $spacing-xl;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: $color-text-white;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  border-radius: $radius-button;
+}
+
+.coachHeader {
+  background: $color-bg-card;
+  padding: $spacing-md $page-padding;
+  display: flex;
+  align-items: center;
+  border-bottom: 1rpx solid $color-divider;
+}
+
+.coachAvatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: $radius-round;
+  margin-right: $spacing-md;
+}
+
+.coachInfo {
+  flex: 1;
+}
+
+.coachName {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.coachRole {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}

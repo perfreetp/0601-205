@@ -1,0 +1,190 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  padding-bottom: 40rpx;
+}
+
+.teamHeader {
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  padding: $spacing-xl $page-padding;
+  color: $color-text-white;
+  margin-bottom: -40rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.teamInfo {
+  display: flex;
+  align-items: center;
+  margin-bottom: $spacing-lg;
+}
+
+.teamLogo {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: $radius-lg;
+  margin-right: $spacing-lg;
+  border: 4rpx solid rgba(255, 255, 255, 0.3);
+  background: $color-bg-card;
+}
+
+.teamText {
+  flex: 1;
+  min-width: 0;
+}
+
+.teamName {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  margin-bottom: $spacing-xs;
+  @include text-ellipsis;
+}
+
+.teamSport {
+  font-size: $font-size-sm;
+  opacity: 0.9;
+  margin-bottom: $spacing-xs;
+}
+
+.teamCoach {
+  font-size: $font-size-xs;
+  opacity: 0.8;
+}
+
+.statsRow {
+  display: flex;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: $radius-md;
+  padding: $spacing-md;
+}
+
+.statItem {
+  flex: 1;
+  text-align: center;
+}
+
+.statNum {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  margin-bottom: 4rpx;
+}
+
+.statLabel {
+  font-size: $font-size-xs;
+  opacity: 0.9;
+}
+
+.pageContent {
+  padding: 0 $page-padding;
+  position: relative;
+  z-index: 2;
+}
+
+.quickActions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $spacing-md;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  margin-bottom: $spacing-lg;
+}
+
+.actionItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .icon {
+    font-size: 48rpx;
+    margin-bottom: $spacing-xs;
+  }
+
+  .label {
+    font-size: $font-size-xs;
+    color: $color-text-secondary;
+  }
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+  margin-top: $spacing-md;
+}
+
+.sectionTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.moreBtn {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.matchCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  display: flex;
+  align-items: center;
+}
+
+.matchInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.matchTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-xs;
+  @include text-ellipsis;
+}
+
+.matchDate {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-bottom: $spacing-xs;
+}
+
+.matchOpponent {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.matchScore {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-left: $spacing-md;
+}
+
+.scoreText {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+}
+
+.win {
+  color: $color-success;
+}
+
+.lose {
+  color: $color-error;
+}
+
+.draw {
+  color: $color-warning;
+}
+
+.videoList {
+  margin-top: $spacing-md;
+}
